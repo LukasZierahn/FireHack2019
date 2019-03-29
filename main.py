@@ -35,13 +35,14 @@ class Main(IDataReceived):
         #print(lmcpObject.FULL_LMCP_TYPE_NAME)
 
         if isinstance(lmcpObject, KeepInZone):
-            self.fireMap = FireMap(self, int(lmcpObject.Boundary.Width), int(lmcpObject.Boundary.Height))
+            self.fireMap = FireMap(self, lmcpObject)
 
         elif isinstance(lmcpObject, SessionStatus):
             self.time = lmcpObject.ScenarioTime
 
         elif isinstance(lmcpObject, AirVehicleState):
             self.time = lmcpObject.Time
+            self.fireMap.HandleAirVehicleState(lmcpObject)
 
         elif isinstance(lmcpObject, HazardZoneDetection):
             hazardDetected = lmcpObject

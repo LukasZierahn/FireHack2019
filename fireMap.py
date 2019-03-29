@@ -4,10 +4,11 @@ import main
 
 class FireMap():
 
-    def __init__ (self, main, x, y):
+    def __init__ (self, main, lmcpObject):
         self.main = main
-        self.width = x
-        self.height = y
+        self.width = lmcpObject.Boundary.Width
+        self.height = lmcpObject.Boundary.Height
+        self.center = lmcpObject.Boundary.CenterPoint
 
         print("Creating Map with dimensions %d/%d" % (self.width, self.height))
         millis = time.time()
@@ -16,8 +17,20 @@ class FireMap():
 
         print("Map created in %.3f seconds" % (time.time() - millis))
 
+    def HandleAirVehicleState(self, msg):
+        print(msg.get_Location())
+
+    def LocationToCoord(self, location):
+        pass
+
+    def CoordToLocation(self, x, y):
+        pass
+
     def getPoint(self, x, y):
         return self.data[y * self.width + y]
 
     def getTime(self, x, y):
         return self.main.time - getPoint(x, y)
+
+    def setPoint(self, x, y, value):
+        self.data[y * self.width + y] = value
