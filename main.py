@@ -32,7 +32,7 @@ class Main(IDataReceived):
         self.__uavsLoiter = {}
         self.__estimatedHazardZone = Polygon()
         self.time = 0
-        self.UAVList = []
+        self.UAVList = {}
 
     def dataReceived(self, lmcpObject):
         #print(lmcpObject.FULL_LMCP_TYPE_NAME)
@@ -41,7 +41,7 @@ class Main(IDataReceived):
             self.fireMap = FireMap(self, lmcpObject)
 
         elif isinstance(lmcpObject, AirVehicleConfiguration):
-            self.UAVList.append(UAV(self, lmcpObject))
+            self.UAVList[lmcpObject.ID] = UAV(self, lmcpObject))
 
         elif isinstance(lmcpObject, AirVehicleState):
             self.time = lmcpObject.Time
