@@ -16,8 +16,10 @@ from afrl.cmasi.Location3D import Location3D
 from afrl.cmasi.KeepInZone import KeepInZone
 from afrl.cmasi.SessionStatus import SessionStatus
 from afrl.cmasi.AirVehicleState import AirVehicleState
+from afrl.cmasi.AirVehicleConfiguration import AirVehicleConfiguration
 
 from fireMap import *
+from uav import *
 
 class PrintLMCPObject(IDataReceived):
     def dataReceived(self, lmcpObject):
@@ -30,12 +32,17 @@ class Main(IDataReceived):
         self.__uavsLoiter = {}
         self.__estimatedHazardZone = Polygon()
         self.time = 0
+        self.UAVList = []
 
     def dataReceived(self, lmcpObject):
         #print(lmcpObject.FULL_LMCP_TYPE_NAME)
 
         if isinstance(lmcpObject, KeepInZone):
             self.fireMap = FireMap(self, lmcpObject)
+
+        elif isinstance(lmcpObject, AirVehicleConfiguration):
+            self.UAVList.append(UAV(self, lmcpObject))
+
 
         elif isinstance(lmcpObject, SessionStatus):
             self.time = lmcpObject.ScenarioTime

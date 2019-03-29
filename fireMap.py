@@ -6,8 +6,8 @@ class FireMap():
 
     def __init__ (self, main, lmcpObject):
         self.main = main
-        self.width = lmcpObject.Boundary.Width
-        self.height = lmcpObject.Boundary.Height
+        self.width = int(lmcpObject.Boundary.Width)
+        self.height = int(lmcpObject.Boundary.Height)
         self.center = lmcpObject.Boundary.CenterPoint
 
         print("Creating Map with dimensions %d/%d" % (self.width, self.height))
