@@ -1,6 +1,6 @@
 import time
 import main
-
+import mil.afrl.amase.utils.CmasiNavUtils
 
 class FireMap():
 

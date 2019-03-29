@@ -41,7 +41,7 @@ class Main(IDataReceived):
             self.fireMap = FireMap(self, lmcpObject)
 
         elif isinstance(lmcpObject, AirVehicleConfiguration):
-            self.UAVList[lmcpObject.ID] = UAV(self, lmcpObject))
+            self.UAVList[lmcpObject.ID] = UAV(self, lmcpObject)
 
         elif isinstance(lmcpObject, AirVehicleState):
             self.time = lmcpObject.Time
