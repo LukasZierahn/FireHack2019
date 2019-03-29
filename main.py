@@ -13,20 +13,37 @@ from afrl.cmasi.AltitudeType import AltitudeType
 from afrl.cmasi.searchai.HazardZoneDetection import HazardZoneDetection
 from afrl.cmasi.searchai.HazardType import HazardType
 from afrl.cmasi.Location3D import Location3D
+from afrl.cmasi.KeepInZone import KeepInZone
+from afrl.cmasi.SessionStatus import SessionStatus
+from afrl.cmasi.AirVehicleState import AirVehicleState
+
+from fireMap import *
 
 class PrintLMCPObject(IDataReceived):
     def dataReceived(self, lmcpObject):
         print(lmcpObject.toXMLStr(""))
 
-class SampleHazardDetector(IDataReceived):
+class Main(IDataReceived):
 
     def __init__(self, tcpClient):
         self.__client = tcpClient
         self.__uavsLoiter = {}
         self.__estimatedHazardZone = Polygon()
+        self.time = 0
 
     def dataReceived(self, lmcpObject):
-        if isinstance(lmcpObject, HazardZoneDetection):
+        #print(lmcpObject.FULL_LMCP_TYPE_NAME)
+
+        if isinstance(lmcpObject, KeepInZone):
+            self.fireMap = FireMap(self, int(lmcpObject.Boundary.Width), int(lmcpObject.Boundary.Height))
+
+        elif isinstance(lmcpObject, SessionStatus):
+            self.time = lmcpObject.ScenarioTime
+
+        elif isinstance(lmcpObject, AirVehicleState):
+            self.time = lmcpObject.Time
+
+        elif isinstance(lmcpObject, HazardZoneDetection):
             hazardDetected = lmcpObject
             #Get location where zone first detected
             detectedLocation = hazardDetected.get_DetectedLocation()
@@ -95,7 +112,7 @@ if __name__ == '__main__':
     myPort = 5555
     amaseClient = AmaseTCPClient(myHost, myPort)
     #amaseClient.addReceiveCallback(PrintLMCPObject())
-    amaseClient.addReceiveCallback(SampleHazardDetector(amaseClient))
+    amaseClient.addReceiveCallback(Main(amaseClient))
 
     try:
         # make a threaded client, listen until a keyboard interrupt (ctrl-c)
