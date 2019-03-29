@@ -43,13 +43,12 @@ class Main(IDataReceived):
         elif isinstance(lmcpObject, AirVehicleConfiguration):
             self.UAVList.append(UAV(self, lmcpObject))
 
-
-        elif isinstance(lmcpObject, SessionStatus):
-            self.time = lmcpObject.ScenarioTime
-
         elif isinstance(lmcpObject, AirVehicleState):
             self.time = lmcpObject.Time
             self.fireMap.HandleAirVehicleState(lmcpObject)
+
+        elif isinstance(lmcpObject, SessionStatus):
+            self.time = lmcpObject.ScenarioTime
 
         elif isinstance(lmcpObject, HazardZoneDetection):
             hazardDetected = lmcpObject

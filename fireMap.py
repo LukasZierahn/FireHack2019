@@ -18,7 +18,7 @@ class FireMap():
         print("Map created in %.3f seconds" % (time.time() - millis))
 
     def HandleAirVehicleState(self, msg):
-        print(msg.get_Location())
+        print(msg.Location)
 
     def LocationToCoord(self, location):
         pass
