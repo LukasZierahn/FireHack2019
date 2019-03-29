@@ -9,6 +9,7 @@ class UAV():
         self.ID = msg.ID
         self.x = 0
         self.y = 0
+        self.status = None
 
         if (msg.EntityType.decode("utf-8") == "FixedWing"):
             self.fixedWing = True
@@ -21,3 +22,4 @@ class UAV():
 
     def UpdateUAV(self, msg):
         self.x, self.y = self.main.fireMap.LocationToCoord(msg.Location)
+        self.status = msg

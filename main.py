@@ -46,6 +46,7 @@ class Main(IDataReceived):
         elif isinstance(lmcpObject, AirVehicleState):
             self.time = lmcpObject.Time
             self.fireMap.HandleAirVehicleState(lmcpObject)
+            self.UAVList[lmcpObject.ID].UpdateUAV(lmcpObject)
 
         elif isinstance(lmcpObject, SessionStatus):
             self.time = lmcpObject.ScenarioTime
